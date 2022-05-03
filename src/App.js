@@ -1,24 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import Input from './components/Input';
+import { useForm } from './hooks/form-hook';
+import classes from './styles/App.module.css';
+import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from './utils/validators';
 
 function App() {
+
+  const [formState, inputHandler] = useForm(
+    {
+      name: {
+        value: '',
+        isValid: false
+      },
+    },
+    false
+  );
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className={classes.App}>
+      <form>
+        <Input
+          id="username"
+          element="input"
+          type="text"
+          placeholder="Username"
+          validators={[VALIDATOR_REQUIRE()]}
+          onInput={inputHandler}
+        />
+
+        <Input
+          id="password"
+          element="input"
+          type="password"
+          placeholder="Password"
+          validators={[VALIDATOR_REQUIRE()]}
+          onInput={inputHandler}
+        />
+
+        <Input
+          id="email"
+          element="input"
+          type="email"
+          placeholder="Email"
+          validators={[VALIDATOR_MINLENGTH(10), VALIDATOR_EMAIL()]}
+          onInput={inputHandler}
+        />
+      </form>
+    </main>
   );
 }
 

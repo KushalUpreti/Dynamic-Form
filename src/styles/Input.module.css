@@ -1,0 +1,13 @@
+.form_error {
+    width: 100%;
+    background-color: red;
+}
+
+.error_signal {
+    /* min-height: 20px; */
+}
+
+.error_text {
+    margin: 2px;
+    color: red;
+}
