@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect } from 'react';
 import classes from '../styles/Input.module.css'
 
-import { validate } from '../utils/validators';
+import { validate, VALIDATOR_EMAIL, VALIDATOR_MAX, VALIDATOR_MAXLENGTH, VALIDATOR_MIN, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '../utils/validators';
 
 const inputReducer = (state, action) => {
     switch (action.type) {
@@ -34,6 +34,32 @@ function ErrorSignal({ inputState }) {
     )
 }
 
+function generateValidators(rules) {
+    let array = [];
+    for (const key in rules) {
+        const value = rules[key];
+        if (key === 'required' && value === true) {
+            array.push(VALIDATOR_REQUIRE());
+        }
+        if (key === 'minLength') {
+            array.push(VALIDATOR_MINLENGTH(value));
+        }
+        if (key === 'maxLength') {
+            array.push(VALIDATOR_MAXLENGTH(value));
+        }
+        if (key === 'min') {
+            array.push(VALIDATOR_MIN(value));
+        }
+        if (key === 'max') {
+            array.push(VALIDATOR_MAX(value));
+        }
+        if (key === 'email') {
+            array.push(VALIDATOR_EMAIL());
+        }
+    }
+    return array;
+}
+
 const Input = props => {
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: props.initialValue || '',
@@ -41,7 +67,6 @@ const Input = props => {
         isValid: props.initialValid || false,
         errorMessage: ''
     });
-
     const { id, onInput } = props;
     const { value, isValid } = inputState;
 
@@ -54,7 +79,7 @@ const Input = props => {
             type: 'CHANGE',
             inputName: id,
             val: event.target.value,
-            validators: props.validators
+            validators: generateValidators(props.validators)
         });
     };
 
@@ -63,7 +88,7 @@ const Input = props => {
             type: 'TOUCH',
             val: value,
             inputName: id,
-            validators: props.validators
+            validators: generateValidators(props.validators)
         });
     };
 
