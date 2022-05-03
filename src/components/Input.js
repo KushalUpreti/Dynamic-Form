@@ -69,7 +69,7 @@ const Input = props => {
 
     const element =
         props.element === 'input' ? (
-            <>
+            <div className={classes.input_wrapper}>
                 <input
                     id={props.id}
                     type={props.type}
@@ -77,11 +77,12 @@ const Input = props => {
                     onChange={changeHandler}
                     onBlur={touchHandler}
                     value={inputState.value}
+                    className={classes.input_area}
                 />
                 <ErrorSignal inputState={inputState} />
-            </>
+            </div>
         ) : (
-            <>
+            <div>
                 <textarea
                     id={props.id}
                     cols="30"
@@ -92,7 +93,7 @@ const Input = props => {
                     value={inputState.value}
                 />
                 <ErrorSignal classes={props.classes} inputState={inputState} />
-            </>
+            </div>
         );
 
     return (
